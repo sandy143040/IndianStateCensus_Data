@@ -1,0 +1,30 @@
+﻿using CsvHelper;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace IndianStateCensusData_Problem
+{
+    public class IndianStateAnalyser
+    {
+        public int ReadStateCnsusData(string path)
+        {
+            using (var reader = new StreamReader(path))
+            {
+                using(var csv = new CsvReader(reader,CultureInfo.InvariantCulture))
+                {
+                    var record = csv.GetRecords<StateCensusData>().ToList();
+                    foreach(var data in record)
+                    {
+                        Console.WriteLine(data.State+" "+data.DensityPerSqKm+" "+data.Population+" "+data.AreaInSqKm+" ");
+                    }
+                    return record.Count() - 1;
+                }
+            }
+        }
+    }
+}
